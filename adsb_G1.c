@@ -66,8 +66,5 @@ void input_data(int argc, char **argv) {
         for (int j = 0; j < m; j++) {
             X[i][j] = line[j] - '0';
         }
-        if (X[i][0] == 0) {
-            printf("%d\n", i);
-        }
     }
 }
