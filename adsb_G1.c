@@ -55,7 +55,7 @@ void input_data(int argc, char **argv) {
         exit(3);
     }
 
-    if (fgets(line, m + 1, file) != NULL) {
+    if (fgets(line, sizeof(line), file) != NULL) {
         for (int j = 0; j < m; j++) {
             A[j] = line[j];
         }
@@ -66,6 +66,8 @@ void input_data(int argc, char **argv) {
         for (int j = 0; j < m; j++) {
             X[i][j] = line[j] - '0';
         }
-        printf("%d\n", X[i][0]);
+        if (X[i][0] == 0) {
+            printf("%d\n", i);
+        }
     }
 }
