@@ -1,3 +1,3 @@
 #!/bin/bash
-g++ test.cpp -O2 -g
+g++ test.cpp -O2 -g -fopenmp
 ./a.out ./data/MODEL1_rev/data1 ./data/MODEL1_rev/range1 ./data/MODEL1_rev/myans1

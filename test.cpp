@@ -74,11 +74,14 @@ void input_data(int, char **);
 
 int main(int argc, char **argv) {
     clock_t tic, toc;
+    struct timespec start, end;
     tic = clock();
+    clock_gettime(CLOCK_REALTIME, &start);
     input_data(argc, argv);
 
     if (model == 1) {
         vector<vi> ans(m, vi(8, 0));
+// #pragma omp parallel for // 並列処理を試したい場合は、この行のコメントアウトを外してください
         rep(i, 0, m) {
             int ceil = min(8, m - i);
             rep(j, 0, n) {
@@ -97,7 +100,12 @@ int main(int argc, char **argv) {
         }
     }
     toc = clock();
-    cout << (double)(toc - tic) / CLOCKS_PER_SEC << endl;
+    clock_gettime(CLOCK_REALTIME, &end);
+    cout << "clock: " << (double)(toc - tic) / CLOCKS_PER_SEC << endl;
+    cout << "time: "
+         << ((double)end.tv_sec - (double)start.tv_sec) +
+                ((double)end.tv_nsec - (double)start.tv_nsec) / 1e9
+         << endl;
     return 0;
 }
 
