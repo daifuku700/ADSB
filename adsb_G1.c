@@ -57,7 +57,7 @@ void input_data(int argc, char **argv) {
 
     if (fgets(line, sizeof(line), file) != NULL) {
         for (int j = 0; j < m; j++) {
-            A[j] = line[j];
+            A[j] = line[j] - '0';
         }
     }
 
