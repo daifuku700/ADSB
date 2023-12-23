@@ -1,3 +1,3 @@
 #!/bin/bash
-gcc adsb_G1.c -O2 -o adsb_G1 -g
+gcc adsb_G1.c -O2 -o adsb_G1 -g -Wall -fopenmp
 ./adsb_G1 ./data/MODEL1_rev/data0 ./data/MODEL1_rev/range0 ./data/MODEL1_rev/myans0

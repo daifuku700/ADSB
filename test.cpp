@@ -1,4 +1,7 @@
-#include <bits/stdc++.h>
+#include <vector>
+#include <string>
+#include <climits>
+#include <iostream>
 
 using namespace std;
 
@@ -85,9 +88,9 @@ int main(int argc, char **argv) {
         rep(i, 0, m) {
             int ceil = min(8, m - i);
             rep(j, 0, n) {
-                rep(k, 0, ceil) {
-                    if (A[i + k] == X[j][i + k]) {
-                        ans[i][k]++;
+                rep(l, 0, ceil) {
+                    if (A[i + l] == X[j][i + l]) {
+                        ans[i][l]++;
                     } else {
                         break;
                     }
@@ -98,6 +101,7 @@ int main(int argc, char **argv) {
         rep(i, 0, p) {
             fprintf(file, "%d, %d, %d\n", l[i], s[i], ans[l[i]][s[i] - 1]);
         }
+        fclose(file);
     }
     toc = clock();
     clock_gettime(CLOCK_REALTIME, &end);
