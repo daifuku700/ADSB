@@ -4,7 +4,7 @@
 
 int n, m, p, k;
 int *l, *s, *A;
-int **X;
+int **data;
 
 int model = 0;
 
@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
             ans[i] = (int *)calloc(sizeof(int), k);
             for (int j = 0; j < n; j++) {
                 for (int l = 0; l < ceil; l++) {
-                    if (A[i + l] == X[j][i + l + 1]) {
+                    if (A[i + l] == data[j][i + l + 1]) {
                         ans[i][l]++;
                     } else {
                         break;
@@ -41,12 +41,12 @@ int main(int argc, char **argv) {
     } else if (model == 2) {
 // #pragma omp parallel for // 並列処理を試したい場合は、この行のコメントアウトを外してください
         for (int i = 0; i < n; i++) {
-            X[i][1] = (X[i][1] == A[0]) ? 1 : 0;
+            data[i][1] = (data[i][1] == A[0]) ? 1 : 0;
             for (int j = 2; j <= m; j++) {
-                if (X[i][j] == A[j - 1]) {
-                    X[i][j] = X[i][j - 1] + 1;
+                if (data[i][j] == A[j - 1]) {
+                    data[i][j] = data[i][j - 1] + 1;
                 } else {
-                    X[i][j] = X[i][j - 1];
+                    data[i][j] = data[i][j - 1];
                 }
             }
         }
@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
         for (int i = 0; i < p; i++) {
             int ans = 0;
             for (int j = 0; j < n; j++) {
-                if (s[i] == (X[j][l[i] + s[i]] - X[j][l[i]])) {
+                if (s[i] == (data[j][l[i] + s[i]] - data[j][l[i]])) {
                     ans++;
                 }
             }
@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
 
     free(l);
     free(s);
-    free(X);
+    free(data);
     free(A);
 
     toc = clock();
@@ -99,7 +99,7 @@ void input_data(int argc, char **argv) {
             model = 2;
         }
     }
-    X = (int **)malloc(sizeof(int *) * n);
+    data = (int **)malloc(sizeof(int *) * n);
     l = (int *)malloc(sizeof(int) * p);
     s = (int *)malloc(sizeof(int) * p);
     A = (int *)malloc(sizeof(int) * m);
@@ -124,10 +124,10 @@ void input_data(int argc, char **argv) {
     }
 
     for (int i = 0; fgets(line, sizeof(line), file) != NULL; i++) {
-        X[i] = (int *)malloc(sizeof(int) * (m + 1));
-        X[i][0] = 0;
+        data[i] = (int *)malloc(sizeof(int) * (m + 1));
+        data[i][0] = 0;
         for (int j = 0; j < m; j++) {
-            X[i][j + 1] = line[j] - '0';
+            data[i][j + 1] = line[j] - '0';
         }
     }
 }
