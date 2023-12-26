@@ -39,8 +39,7 @@ int main(int argc, char **argv) {
         fclose(file);
     } else if (model == 2) {
         for (int i = 0; i < n; i++) {
-            data[i][1] = (data[i][1] == A[0]) ? 1 : 0;
-            for (int j = 2; j <= m; j++) {
+            for (int j = 1; j <= m; j++) {
                 if (data[i][j] == A[j - 1]) {
                     data[i][j] = data[i][j - 1] + 1;
                 } else {
