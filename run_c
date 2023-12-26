@@ -1,3 +1,10 @@
 #!/bin/bash
 gcc adsb_G1.c -o adsb_G1 -g -Wall
 ./adsb_G1 ./data/MODEL1_rev/data0 ./data/MODEL1_rev/range0 ./data/MODEL1_rev/myans0
+./adsb_G1 ./data/MODEL1_rev/data1 ./data/MODEL1_rev/range1 ./data/MODEL1_rev/myans1
+./adsb_G1 ./data/MODEL1_rev/data2 ./data/MODEL1_rev/range2 ./data/MODEL1_rev/myans2
+./adsb_G1 ./data/MODEL1_rev/data3 ./data/MODEL1_rev/range3 ./data/MODEL1_rev/myans3
+./adsb_G1 ./data/MODEL2_rev/data0 ./data/MODEL2_rev/range0 ./data/MODEL2_rev/myans0
+./adsb_G1 ./data/MODEL2_rev/data1 ./data/MODEL2_rev/range1 ./data/MODEL2_rev/myans1
+./adsb_G1 ./data/MODEL2_rev/data2 ./data/MODEL2_rev/range2 ./data/MODEL2_rev/myans2
+./adsb_G1 ./data/MODEL2_rev/data3 ./data/MODEL2_rev/range3 ./data/MODEL2_rev/myans3
