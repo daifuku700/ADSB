@@ -19,7 +19,6 @@ int main(int argc, char **argv) {
 
     if (model == 1) {
         int **ans = (int **)malloc(sizeof(int *) * m);
-// #pragma omp parallel for // 並列処理を試したい場合は、この行のコメントアウトを外してください
         for (int i = 0; i < m; i++) {
             int ceil = (8 < m - i) ? 8 : m - i;
             ans[i] = (int *)calloc(sizeof(int), k);
@@ -39,7 +38,6 @@ int main(int argc, char **argv) {
         }
         fclose(file);
     } else if (model == 2) {
-// #pragma omp parallel for // 並列処理を試したい場合は、この行のコメントアウトを外してください
         for (int i = 0; i < n; i++) {
             data[i][1] = (data[i][1] == A[0]) ? 1 : 0;
             for (int j = 2; j <= m; j++) {
