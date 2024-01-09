@@ -38,16 +38,7 @@ int main(int argc, char **argv) {
         }
         fclose(file);
     } else if (model == 2) {
-        for (int i = 0; i < n; i++) {
-            data[i][1] = (data[i][1] == A[0]) ? 1 : 0;
-            for (int j = 2; j <= m; j++) {
-                if (data[i][j] == A[j - 1]) {
-                    data[i][j] = data[i][j - 1] + 1;
-                } else {
-                    data[i][j] = data[i][j - 1];
-                }
-            }
-        }
+
         FILE *file = fopen(argv[3], "w");
         for (int i = 0; i < p; i++) {
             int ans = 0;
@@ -121,11 +112,26 @@ void input_data(int argc, char **argv) {
         }
     }
 
-    for (int i = 0; fgets(line, sizeof(line), file) != NULL; i++) {
-        data[i] = (int *)malloc(sizeof(int) * (m + 1));
-        data[i][0] = 0;
-        for (int j = 0; j < m; j++) {
-            data[i][j + 1] = line[j] - '0';
+    if (model == 1) {
+        for (int i = 0; fgets(line, sizeof(line), file) != NULL; i++) {
+            data[i] = (int *)malloc(sizeof(int) * (m + 1));
+            data[i][0] = 0;
+            for (int j = 0; j < m; j++) {
+                data[i][j + 1] = line[j] - '0';
+            }
+        }
+    } else if (model == 2) {
+        for (int i = 0; fgets(line, sizeof(line), file) != NULL; i++) {
+            data[i] = (int *)malloc(sizeof(int) * (m + 1));
+            data[i][0] = 0;
+            for (int j = 0; j < m; j++) {
+                if (line[j] == A[j] + '0') {
+                    data[i][j + 1] = line[j] - '0';
+                    data[i][j + 1]++;
+                } else {
+                    data[i][j + 1] = line[j] - '0';
+                }
+            }
         }
     }
 }
