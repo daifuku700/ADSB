@@ -17,6 +17,8 @@ int main(int argc, char **argv) {
     clock_gettime(CLOCK_REALTIME, &start);
     input_data(argc, argv);
 
+    FILE *file = fopen(argv[3], "w");
+
     if (model == 1) {
         int **ans = (int **)malloc(sizeof(int *) * m);
         for (int i = 0; i < m; i++) {
@@ -32,13 +34,10 @@ int main(int argc, char **argv) {
                 }
             }
         }
-        FILE *file = fopen(argv[3], "w");
         for (int i = 0; i < p; i++) {
             fprintf(file, "%d, %d, %d\n", l[i], s[i], ans[l[i]][s[i] - 1]);
         }
-        fclose(file);
     } else if (model == 2) {
-        FILE *file = fopen(argv[3], "w");
         for (int i = 0; i < p; i++) {
             int ans = 0;
             for (int j = 0; j < n; j++) {
@@ -48,8 +47,9 @@ int main(int argc, char **argv) {
             }
             fprintf(file, "%d, %d, %d\n", l[i], s[i], ans);
         }
-        fclose(file);
     }
+
+    fclose(file);
 
     free(l);
     free(s);
