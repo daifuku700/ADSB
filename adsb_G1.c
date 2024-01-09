@@ -123,11 +123,13 @@ void input_data(int argc, char **argv) {
         for (int i = 0; fgets(line, sizeof(line), file) != NULL; i++) {
             data[i] = (int *)malloc(sizeof(int) * (m + 1));
             data[i][0] = 0;
+            int now = 0, next;
             for (int j = 0; j < m; j++) {
+                now = next;
                 if (line[j] - '0' == A[j]) {
-                    data[i][j + 1] = data[i][j] + 1;
+                    next = (data[i][j + 1] = now + 1);
                 } else {
-                    data[i][j + 1] = data[i][j];
+                    next = (data[i][j + 1] = now);
                 }
             }
         }
