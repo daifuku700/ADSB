@@ -38,7 +38,6 @@ int main(int argc, char **argv) {
         }
         fclose(file);
     } else if (model == 2) {
-
         FILE *file = fopen(argv[3], "w");
         for (int i = 0; i < p; i++) {
             int ans = 0;
@@ -125,11 +124,10 @@ void input_data(int argc, char **argv) {
             data[i] = (int *)malloc(sizeof(int) * (m + 1));
             data[i][0] = 0;
             for (int j = 0; j < m; j++) {
-                if (line[j] == A[j] + '0') {
-                    data[i][j + 1] = line[j] - '0';
-                    data[i][j + 1]++;
+                if (line[j] - '0' == A[j]) {
+                    data[i][j + 1] = data[i][j] + 1;
                 } else {
-                    data[i][j + 1] = line[j] - '0';
+                    data[i][j + 1] = data[i][j];
                 }
             }
         }
