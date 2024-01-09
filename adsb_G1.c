@@ -123,4 +123,5 @@ void input_data(int argc, char **argv) {
             }
         }
     }
+    fclose(file);
 }
