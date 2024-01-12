@@ -1,14 +1,41 @@
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
 typedef unsigned short us;
+typedef struct {
+    int start;
+    int end;
+} start_end;
 
 int n, m, p, k;
 
 int model = 0;
 
-void input_data(int, char **);
+int thread_num = 4;
+
+char line[(int)1e4 + 10];
+char A[10000 + 10];
+
+us **ans;
+
+void *process(void *arg) {
+    start_end *se = (start_end *)arg;
+    int start = se->start;
+    int end = se->end;
+
+    for (int i = start; i < end; i++) {
+        for (int h = 0; h < 8; h++) {
+            if (A[i + h] == line[i + h]) {
+                ans[i][h]++;
+            } else {
+                break;
+            }
+        }
+    }
+    return NULL;
+}
 
 int main(int argc, char **argv) {
     clock_t tic, toc;
@@ -21,9 +48,6 @@ int main(int argc, char **argv) {
 
     tic = clock();
     clock_gettime(CLOCK_REALTIME, &start);
-
-    char line[(int)1e4 + 10];
-    char A[10000 + 10];
 
     FILE *range = fopen(argv[2], "r");
     if (range == NULL) {
@@ -58,19 +82,24 @@ int main(int argc, char **argv) {
     }
 
     if (model == 1) {
-        us **ans = (us **)malloc(sizeof(us *) * m);
+        ans = (us **)malloc(sizeof(us *) * m);
         for (int i = 0; i < m; i++) {
             ans[i] = (us *)calloc(sizeof(us), 8);
         }
+        pthread_t threads[thread_num];
+        start_end se[thread_num];
+        int chunk_size = m / thread_num;
+        for (int i = 0; i < thread_num; i++) {
+            se[i].start = i * chunk_size;
+            se[i].end = se[i].start + chunk_size;
+        }
         for (; fgets(line, sizeof(line), data) != NULL;) {
-            for (int i = 0; i < m; i++) {
-                for (int h = 0; h < 8; h++) {
-                    if (A[i + h] == line[i + h]) {
-                        ans[i][h]++;
-                    } else {
-                        break;
-                    }
-                }
+            for (int i = 0; i < thread_num; i++) {
+                pthread_create(&threads[i], NULL, process, &se[i]);
+            }
+
+            for (int i = 0; i < thread_num; i++) {
+                pthread_join(threads[i], NULL);
             }
         }
         int l, s;
