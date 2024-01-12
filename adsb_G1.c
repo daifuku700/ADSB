@@ -59,27 +59,14 @@ int main(int argc, char **argv) {
     }
 
     if (model == 1) {
-        us *ans = (us *)malloc(sizeof(us) * (m + 8));
-        us right = 0, left = 0;
+        us *ans;
+        ans = (us *)malloc(sizeof(us) * (m + 8));
+        us left;
         for (; fgets(line, sizeof(line), data) != NULL;) {
-            right = left = 0;
-            for (int i = 0; i < 8; i++) {
+            left = 0;
+            for (int i = 0; i < m; i++) {
                 if (A[i] == line[i]) {
-                    ans[i]++;
-                    right++;
-                } else {
-                    left = right;
-                    break;
-                }
-            }
-            for (int i = right + 1; i < m; i++) {
-                if (A[i] == line[i]) {
-                    right = i;
-                    if (right - left >= 8) {
-                        ans[i + 7]++;
-                    } else {
-                        ans[i + (right - left)]++;
-                    }
+                    ans[i - left + i - 1]++;
                 } else {
                     left = i;
                 }
@@ -89,6 +76,7 @@ int main(int argc, char **argv) {
         for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
             fprintf(output, "%d, %d, %d\n", l, s, ans[l + s - 1]);
         }
+        free(ans);
     } else if (model == 2) {
         short l, s;
         for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
