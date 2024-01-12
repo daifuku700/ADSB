@@ -4,10 +4,6 @@
 #include <time.h>
 
 typedef unsigned short us;
-typedef struct {
-    int start;
-    int end;
-} start_end;
 
 int n, m, p, k;
 
@@ -15,27 +11,35 @@ int model = 0;
 
 int thread_num = 1;
 
-char line[(int)1e4 + 10];
-char A[10000 + 10];
+char line[10000 + 302];
+char A[10000 + 302];
 
-us **ans;
+// void *model1(void *arg) {
+//     range *se = (range *)arg;
+//     int start = se->start;
+//     int end = se->end;
 
-void *model1(void *arg) {
-    start_end *se = (start_end *)arg;
-    int start = se->start;
-    int end = se->end;
+//     for (int i = start; i < end; i++) {
+//         for (int h = 0; h < 8; h++) {
+//             if (A[i + h] == line[i + h]) {
+//                 ans[i][h]++;
+//             } else {
+//                 break;
+//             }
+//         }
+//     }
+//     return NULL;
+// }
 
-    for (int i = start; i < end; i++) {
-        for (int h = 0; h < 8; h++) {
-            if (A[i + h] == line[i + h]) {
-                ans[i][h]++;
-            } else {
-                break;
-            }
-        }
-    }
-    return NULL;
-}
+struct pair {
+    us sum;
+    us lazy_sum;
+};
+
+typedef struct {
+    us start;
+    us end;
+} range;
 
 int main(int argc, char **argv) {
     clock_t tic, toc;
@@ -82,52 +86,61 @@ int main(int argc, char **argv) {
     }
 
     if (model == 1) {
-        ans = (us **)malloc(sizeof(us *) * m);
-        for (int i = 0; i < m; i++) {
-            ans[i] = (us *)calloc(sizeof(us), 8);
-        }
-        // pthread_t threads[32];
-        // start_end se[32];
-        // int chunk_size = m / thread_num;
-        // for (int i = 0; i < thread_num; i++) {
-        //     se[i].start = i * chunk_size;
-        //     se[i].end = (i == thread_num - 1) ? m : se[i].start + chunk_size;
-        // }
-        // for (; fgets(line, sizeof(line), data) != NULL;) {
-        //     for (int i = 0; i < thread_num; i++) {
-        //         pthread_create(&threads[i], NULL, model1, &se[i]);
-        //     }
-
-        //     for (int i = 0; i < thread_num; i++) {
-        //         pthread_join(threads[i], NULL);
-        //     }
-        // }
+        us *ans = (us **)malloc(sizeof(us) * (m + 8));
+        us right = 0, left = 0;
         for (; fgets(line, sizeof(line), data) != NULL;) {
-            for (int i = 0; i < m; i++) {
-                for (int h = 0; h < 8; h++) {
-                    if (A[i + h] == line[i + h]) {
-                        ans[i][h]++;
-                    } else {
+            for (int i = 0; i < 8; i++) {
+                if (A[i] == line[i]) {
+                    ans[i]++;
+                    right++;
+                } else {
+                    break;
+                }
+            }
+            while (right < m) {
+                left = right;
+                for (int i = left; i < m; i++) {
+                    if (A[i] == line[i]) {
                         break;
                     }
                 }
             }
         }
-        int l, s;
-        for (; fscanf(rg, "%d, %d/n", &l, &s) != EOF;) {
+        short l, s;
+        for (; fscanf(rg, "%hd, %hd/n", &l, &s) != EOF;) {
             fprintf(output, "%d, %d, %d\n", l, s, ans[l][s - 1]);
         }
     } else if (model == 2) {
-        return 0;
-        // for (int i = 0; i < p; i++) {
-        //     int ans = 0;
-        //     for (int j = 0; j < n; j++) {
-        //         if (s[i] == (data[j][l[i] + s[i]] - data[j][l[i]])) {
-        //             ans++;
-        //         }
-        //     }
-        //     fprintf(output, "%d, %d, %d\n", l[i], s[i], ans);
-        // }
+        us *b = (us *)malloc(sizeof(us) * (m + 1));
+        b[0] = 0;
+        for (; fgets(line, sizeof(line), data) != NULL;) {
+            for (int i = 0; i < m; i++) {
+                if (A[i] == line[i]) {
+                    b[i + 1] = b[i] + 1;
+                } else {
+                    b[i + 1] = b[i];
+                }
+            }
+            for (int i = 0; i < m; i++) {
+                us left = i + 1, right = i + 300;
+                us mid;
+                while (left < right) {
+                    mid = (right + left) / 2;
+                    us tmp = b[mid] - b[i];
+                    if (mid > b[mid] - b[i]) {
+                        right = mid - 1;
+                    } else if (tmp) {
+                        left = mid;
+                    }
+                }
+                printf("mid: %d\n", mid);
+                return 0;
+            }
+        }
+        short l, s;
+        for (; fscanf(rg, "%hd, %hd/n", &l, &s) != EOF;) {
+            // fprintf(output, "%d, %d, %d\n", l, s, ans[l][s - 1]);
+        }
     }
 
     fclose(data);
