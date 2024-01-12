@@ -20,7 +20,7 @@ char A[10000 + 10];
 
 us **ans;
 
-void *process(void *arg) {
+void *model1(void *arg) {
     start_end *se = (start_end *)arg;
     int start = se->start;
     int end = se->end;
@@ -91,11 +91,11 @@ int main(int argc, char **argv) {
         int chunk_size = m / thread_num;
         for (int i = 0; i < thread_num; i++) {
             se[i].start = i * chunk_size;
-            se[i].end = se[i].start + chunk_size;
+            se[i].end = (i == thread_num - 1) ? m : se[i].start + chunk_size;
         }
         for (; fgets(line, sizeof(line), data) != NULL;) {
             for (int i = 0; i < thread_num; i++) {
-                pthread_create(&threads[i], NULL, process, &se[i]);
+                pthread_create(&threads[i], NULL, model1, &se[i]);
             }
 
             for (int i = 0; i < thread_num; i++) {
