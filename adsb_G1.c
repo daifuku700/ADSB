@@ -14,33 +14,6 @@ int thread_num = 1;
 char line[10000 + 302];
 char A[10000 + 302];
 
-// void *model1(void *arg) {
-//     range *se = (range *)arg;
-//     int start = se->start;
-//     int end = se->end;
-
-//     for (int i = start; i < end; i++) {
-//         for (int h = 0; h < 8; h++) {
-//             if (A[i + h] == line[i + h]) {
-//                 ans[i][h]++;
-//             } else {
-//                 break;
-//             }
-//         }
-//     }
-//     return NULL;
-// }
-
-struct pair {
-    us sum;
-    us lazy_sum;
-};
-
-typedef struct {
-    us start;
-    us end;
-} range;
-
 int main(int argc, char **argv) {
     clock_t tic, toc;
     struct timespec start, end;
@@ -53,12 +26,12 @@ int main(int argc, char **argv) {
     tic = clock();
     clock_gettime(CLOCK_REALTIME, &start);
 
-    FILE *rg = fopen(argv[2], "r");
-    if (rg == NULL) {
+    FILE *range = fopen(argv[2], "r");
+    if (range == NULL) {
         perror("could not open the file\n");
         exit(2);
     }
-    if (fgets(line, sizeof(line), rg) != NULL) {
+    if (fgets(line, sizeof(line), range) != NULL) {
         if (line[5] == '1') {
             n = 1000, m = 10000, p = 30000, k = 8;
             model = 1;
@@ -86,65 +59,45 @@ int main(int argc, char **argv) {
     }
 
     if (model == 1) {
-        us *ans = (us **)malloc(sizeof(us) * (m + 8));
+        us *ans = (us *)malloc(sizeof(us) * (m + 8));
         us right = 0, left = 0;
         for (; fgets(line, sizeof(line), data) != NULL;) {
+            right = left = 0;
             for (int i = 0; i < 8; i++) {
                 if (A[i] == line[i]) {
                     ans[i]++;
                     right++;
                 } else {
+                    left = right;
                     break;
                 }
             }
-            while (right < m) {
-                left = right;
-                for (int i = left; i < m; i++) {
-                    if (A[i] == line[i]) {
-                        break;
+            for (int i = right + 1; i < m; i++) {
+                if (A[i] == line[i]) {
+                    right = i;
+                    if (right - left >= 8) {
+                        ans[i + 7]++;
+                    } else {
+                        ans[i + (right - left)]++;
                     }
+                } else {
+                    left = i;
                 }
             }
         }
         short l, s;
-        for (; fscanf(rg, "%hd, %hd/n", &l, &s) != EOF;) {
-            fprintf(output, "%d, %d, %d\n", l, s, ans[l][s - 1]);
+        for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
+            fprintf(output, "%d, %d, %d\n", l, s, ans[l + s - 1]);
         }
     } else if (model == 2) {
-        us *b = (us *)malloc(sizeof(us) * (m + 1));
-        b[0] = 0;
-        for (; fgets(line, sizeof(line), data) != NULL;) {
-            for (int i = 0; i < m; i++) {
-                if (A[i] == line[i]) {
-                    b[i + 1] = b[i] + 1;
-                } else {
-                    b[i + 1] = b[i];
-                }
-            }
-            for (int i = 0; i < m; i++) {
-                us left = i + 1, right = i + 300;
-                us mid;
-                while (left < right) {
-                    mid = (right + left) / 2;
-                    us tmp = b[mid] - b[i];
-                    if (mid > b[mid] - b[i]) {
-                        right = mid - 1;
-                    } else if (tmp) {
-                        left = mid;
-                    }
-                }
-                printf("mid: %d\n", mid);
-                return 0;
-            }
-        }
         short l, s;
-        for (; fscanf(rg, "%hd, %hd/n", &l, &s) != EOF;) {
+        for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
             // fprintf(output, "%d, %d, %d\n", l, s, ans[l][s - 1]);
         }
     }
 
     fclose(data);
-    fclose(rg);
+    fclose(range);
     fclose(output);
 
     toc = clock();
