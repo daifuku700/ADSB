@@ -4,16 +4,11 @@ using namespace std;
 
 typedef unsigned short us;
 
-int n, m, p, k;
-
-int model = 0;
-
-int thread_num = 1;
-
-char line[10000 + 302];
-char A[10000 + 302];
-
 int main(int argc, char **argv) {
+    char line[10000 + 302];
+    char A[10000 + 302];
+    int n, m, p, k;
+    int model = 0;
     clock_t tic, toc;
     struct timespec start, end;
 
@@ -53,21 +48,54 @@ int main(int argc, char **argv) {
     }
 
     if (model == 1) {
-        vector<us> ans(m + 100);
+        // vector<vector<us>> ans(m + 100, vector<us>(8, 0));
+        // int left;
+        // for (; fgets(line, sizeof(line), data) != NULL;) {
+        //     left = -1;
+        //     for (int i = 0; i < m; i++) {
+        //         if (A[i] == line[i]) {
+        //             int dif = i - (left + 1);
+        //             if (dif > 7) {
+        //                 dif = 7;
+        //                 left++;
+        //             }
+        //             ans[left + 1][dif]++;
+        //         } else {
+        //             left = i;
+        //         }
+        //     }
+        // }
+        // for (int i = 0; i < m - 1; i++) {
+        //     for (int j = 1; j < 8; j++) {
+        //         ans[i + 1][j - 1] += ans[i][j];
+        //     }
+        // }
+        us *ans;
+        ans = (us *)malloc(sizeof(us) * ((m + 8) * 8));
         us left;
         for (; fgets(line, sizeof(line), data) != NULL;) {
-            left = 0;
+            left = -1;
             for (int i = 0; i < m; i++) {
                 if (A[i] == line[i]) {
-                    ans[i - left + i - 1]++;
+                    int dif = i - (left + 1);
+                    if (dif > 7) {
+                        dif = 7;
+                        left++;
+                    }
+                    ans[(left + 1) * 8 + dif]++;
                 } else {
                     left = i;
                 }
             }
         }
-        short l, s;
-        for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
-            fprintf(output, "%d, %d, %d\n", l, s, ans[l + s - 1]);
+        for (int i = 0; i < m - 1; i++) {
+            for (int j = 1; j < 8; j++) {
+                ans[(i + 1) * 8 + j - 1] += ans[i * 8 + j];
+            }
+        }
+        us l, s;
+        for (; fscanf(range, "%hd, %hd\n", &l, &s) != EOF;) {
+            fprintf(output, "%d, %d, %d\n", l, s, ans[l * 8 + s - 1]);
         }
     } else if (model == 2) {
         short l, s;
