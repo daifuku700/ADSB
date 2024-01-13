@@ -1,0 +1,10 @@
+#!/bin/bash
+gcc mid.c -o mid -g -Wall
+./mid ./data/MODEL1_rev/data0 ./data/MODEL1_rev/range0 ./data/MODEL1_rev/myans0
+./mid ./data/MODEL1_rev/data1 ./data/MODEL1_rev/range1 ./data/MODEL1_rev/myans1
+./mid ./data/MODEL1_rev/data2 ./data/MODEL1_rev/range2 ./data/MODEL1_rev/myans2
+./mid ./data/MODEL1_rev/data3 ./data/MODEL1_rev/range3 ./data/MODEL1_rev/myans3
+./mid ./data/MODEL2_rev/data0 ./data/MODEL2_rev/range0 ./data/MODEL2_rev/myans0
+./mid ./data/MODEL2_rev/data1 ./data/MODEL2_rev/range1 ./data/MODEL2_rev/myans1
+./mid ./data/MODEL2_rev/data2 ./data/MODEL2_rev/range2 ./data/MODEL2_rev/myans2
+./mid ./data/MODEL2_rev/data3 ./data/MODEL2_rev/range3 ./data/MODEL2_rev/myans3
