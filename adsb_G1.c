@@ -7,10 +7,6 @@ typedef unsigned short us;
 
 int n, m, p, k;
 
-int model = 0;
-
-int thread_num = 1;
-
 char line[10000 + 302];
 char A[10000 + 302];
 
@@ -34,10 +30,8 @@ int main(int argc, char **argv) {
     if (fgets(line, sizeof(line), range) != NULL) {
         if (line[5] == '1') {
             n = 1000, m = 10000, p = 30000, k = 8;
-            model = 1;
         } else {
             n = 1000, m = 10000, p = 50000, k = 300;
-            model = 2;
         }
     }
 
@@ -46,16 +40,15 @@ int main(int argc, char **argv) {
         perror("could not open the file\n");
         exit(3);
     }
-    if (fgets(line, sizeof(line), data) != NULL) {
-        for (int j = 0; j < m; j++) {
-            A[j] = line[j];
-        }
+    if (fgets(A, sizeof(A), data) == NULL) {
+        perror("could not read the file\n");
+        exit(4);
     }
 
     FILE *output = fopen(argv[3], "w");
     if (output == NULL) {
         perror("could not open the file\n");
-        exit(4);
+        exit(5);
     }
 
     us *ans;
