@@ -58,65 +58,34 @@ int main(int argc, char **argv) {
         exit(4);
     }
 
-    if (model == 1) {
-        us *ans;
-        ans = (us *)malloc(sizeof(us) * (m * 8));
-        short left;
-        for (; fgets(line, sizeof(line), data) != NULL;) {
-            left = -1;
-            for (int i = 0; i < m; i++) {
-                if (A[i] == line[i]) {
-                    int dif = i - (left + 1);
-                    if (dif > 7) {
-                        dif = 7;
-                        left++;
-                    }
-                    ans[(left + 1) * 8 + dif]++;
-                } else {
-                    left = i;
+    us *ans;
+    ans = (us *)malloc(sizeof(us) * (m * k));
+    short left;
+    for (; fgets(line, sizeof(line), data) != NULL;) {
+        left = -1;
+        for (int i = 0; i < m; i++) {
+            if (A[i] == line[i]) {
+                int dif = i - (left + 1);
+                if (dif > k - 1) {
+                    dif = k - 1;
+                    left++;
                 }
+                ans[(left + 1) * k + dif]++;
+            } else {
+                left = i;
             }
         }
-        for (int i = 0; i < m - 1; i++) {
-            for (int j = 1; j < 8; j++) {
-                ans[(i + 1) * 8 + j - 1] += ans[i * 8 + j];
-            }
-        }
-        short l, s;
-        for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
-            fprintf(output, "%d, %d, %d\n", l, s, ans[l * 8 + s - 1]);
-        }
-        free(ans);
-    } else if (model == 2) {
-        us *ans;
-        ans = (us *)malloc(sizeof(us) * (m * 300));
-        short left;
-        for (; fgets(line, sizeof(line), data) != NULL;) {
-            left = -1;
-            for (int i = 0; i < m; i++) {
-                if (A[i] == line[i]) {
-                    int dif = i - (left + 1);
-                    if (dif > 299) {
-                        dif = 299;
-                        left++;
-                    }
-                    ans[(left + 1) * 300 + dif]++;
-                } else {
-                    left = i;
-                }
-            }
-        }
-        for (int i = 0; i < m - 1; i++) {
-            for (int j = 1; j < 300; j++) {
-                ans[(i + 1) * 300 + j - 1] += ans[i * 300 + j];
-            }
-        }
-        short l, s;
-        for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
-            fprintf(output, "%d, %d, %d\n", l, s, ans[l * 300 + s - 1]);
-        }
-        free(ans);
     }
+    for (int i = 0; i < m - 1; i++) {
+        for (int j = 1; j < k; j++) {
+            ans[(i + 1) * k + j - 1] += ans[i * k + j];
+        }
+    }
+    short l, s;
+    for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
+        fprintf(output, "%d, %d, %d\n", l, s, ans[l * k + s - 1]);
+    }
+    free(ans);
 
     fclose(data);
     fclose(range);
