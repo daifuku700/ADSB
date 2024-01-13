@@ -3,16 +3,12 @@
 #include <stdlib.h>
 #include <time.h>
 
-typedef unsigned short us;
+int k, model, i, j, dif, left;
+short l, s;
 
-int n, m, p, k;
-
-int model = 0;
-
-int thread_num = 1;
-
-char line[10000 + 302];
-char A[10000 + 302];
+char line[10000 + 2];
+char A[10000 + 2];
+FILE *range, *data, *output;
 
 int main(int argc, char **argv) {
     clock_t tic, toc;
@@ -26,66 +22,89 @@ int main(int argc, char **argv) {
     tic = clock();
     clock_gettime(CLOCK_REALTIME, &start);
 
-    FILE *range = fopen(argv[2], "r");
+    range = fopen(argv[2], "r");
     if (range == NULL) {
         perror("could not open the file\n");
         exit(2);
     }
     if (fgets(line, sizeof(line), range) != NULL) {
         if (line[5] == '1') {
-            n = 1000, m = 10000, p = 30000, k = 8;
-            model = 1;
+            model = 1, k = 8;
         } else {
-            n = 1000, m = 10000, p = 50000, k = 300;
-            model = 2;
+            model = 2, k = 300;
         }
     }
 
-    FILE *data = fopen(argv[1], "r");
+    data = fopen(argv[1], "r");
     if (data == NULL) {
         perror("could not open the file\n");
         exit(3);
     }
     if (fgets(line, sizeof(line), data) != NULL) {
-        for (int j = 0; j < m; j++) {
+        for (int j = 0; j < 10000; j++) {
             A[j] = line[j];
         }
     }
 
-    FILE *output = fopen(argv[3], "w");
+    output = fopen(argv[3], "w");
     if (output == NULL) {
         perror("could not open the file\n");
         exit(4);
     }
 
-    us *ans;
-    ans = (us *)malloc(sizeof(us) * (m * k));
-    short left;
-    for (; fgets(line, sizeof(line), data) != NULL;) {
-        left = -1;
-        for (int i = 0; i < m; i++) {
-            if (A[i] == line[i]) {
-                int dif = i - (left + 1);
-                if (dif > k - 1) {
-                    dif = k - 1;
-                    left++;
+    if (model == 1) {
+        short *ans = (short *)malloc(sizeof(short) * (10000 * 8));
+        for (; fgets(line, sizeof(line), data) != NULL;) {
+            left = -1;
+            for (i = 0; i < 10000; i++) {
+                if (A[i] == line[i]) {
+                    dif = i - (left + 1);
+                    if (dif > 7) {
+                        dif = 7;
+                        left++;
+                    }
+                    ans[(left + 1) * 8 + dif]++;
+                } else {
+                    left = i;
                 }
-                ans[(left + 1) * k + dif]++;
-            } else {
-                left = i;
             }
         }
-    }
-    for (int i = 0; i < m - 1; i++) {
-        for (int j = 1; j < k; j++) {
-            ans[(i + 1) * k + j - 1] += ans[i * k + j];
+        for (i = 0; i < 9999; i++) {
+            for (j = 1; j < 8; j++) {
+                ans[(i + 1) * 8 + j - 1] += ans[i * 8 + j];
+            }
         }
+        for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
+            fprintf(output, "%hd, %hd, %hd\n", l, s, ans[l * 8 + s - 1]);
+        }
+        free(ans);
+    } else if (model == 2) {
+        short *ans = (short *)malloc(sizeof(short) * (10000 * 300));
+        for (; fgets(line, sizeof(line), data) != NULL;) {
+            left = -1;
+            for (i = 0; i < 10000; i++) {
+                if (A[i] == line[i]) {
+                    dif = i - (left + 1);
+                    if (dif > 299) {
+                        dif = 299;
+                        left++;
+                    }
+                    ans[(left + 1) * 300 + dif]++;
+                } else {
+                    left = i;
+                }
+            }
+        }
+        for (i = 0; i < 9999; i++) {
+            for (j = 1; j < 300; j++) {
+                ans[(i + 1) * 300 + j - 1] += ans[i * 300 + j];
+            }
+        }
+        for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
+            fprintf(output, "%hd, %hd, %hd\n", l, s, ans[l * 300 + s - 1]);
+        }
+        free(ans);
     }
-    short l, s;
-    for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
-        fprintf(output, "%d, %d, %d\n", l, s, ans[l * k + s - 1]);
-    }
-    free(ans);
 
     fclose(data);
     fclose(range);
