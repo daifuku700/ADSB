@@ -47,7 +47,7 @@ done
 echo ""
 > memory2
 for ((i=0 ; i<10 ; i++)); do
-    echo "model 1 cycle: $i"
+    echo "model 2 cycle: $i"
     /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data0 ./data/MODEL2_rev/range0 ./data/MODEL2_rev/myans0 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
     /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data1 ./data/MODEL2_rev/range1 ./data/MODEL2_rev/myans1 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
     /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data2 ./data/MODEL2_rev/range2 ./data/MODEL2_rev/myans2 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
