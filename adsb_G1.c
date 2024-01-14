@@ -12,7 +12,6 @@ FILE *range, *data, *output;
 
 int main(int argc, char **argv) {
     clock_t tic, toc;
-    struct timespec start, end;
 
     if (argc != 4) {
         perror("the number of command line arguments should be three\n");
@@ -20,7 +19,6 @@ int main(int argc, char **argv) {
     }
 
     tic = clock();
-    clock_gettime(CLOCK_REALTIME, &start);
 
     range = fopen(argv[2], "r");
     if (range == NULL) {
@@ -55,15 +53,15 @@ int main(int argc, char **argv) {
     if (model == 1) {
         short *ans = (short *)malloc(sizeof(short) * (10000 * 8));
         for (; fgets(line, sizeof(line), data) != NULL;) {
-            left = -1;
+            left = -1; // 最後に回答が違った場所
             for (i = 0; i < 10000; i++) {
                 if (A[i] == line[i]) {
-                    dif = i - (left + 1);
+                    dif = i - (left + 1); // 何個の回答が連続して同じか
                     if (dif > 7) {
                         dif = 7;
                         left++;
                     }
-                    ans[(left + 1) * 8 + dif]++;
+                    ans[(left + 1) * 8 + dif]++; // ans[l + 1][dif]++にする
                 } else {
                     left = i;
                 }
@@ -78,7 +76,7 @@ int main(int argc, char **argv) {
             fprintf(output, "%hd, %hd, %hd\n", l, s, ans[l * 8 + s - 1]);
         }
         free(ans);
-    } else if (model == 2) {
+    } else {
         short *ans = (short *)malloc(sizeof(short) * (10000 * 300));
         for (; fgets(line, sizeof(line), data) != NULL;) {
             left = -1;
@@ -111,10 +109,6 @@ int main(int argc, char **argv) {
     fclose(output);
 
     toc = clock();
-    clock_gettime(CLOCK_REALTIME, &end);
     printf("clock: %lf\n", (double)(toc - tic) / CLOCKS_PER_SEC);
-    printf("time: %lf\n",
-           ((double)end.tv_sec - (double)start.tv_sec) +
-               ((double)end.tv_nsec - (double)start.tv_nsec) / 1e9);
     return 0;
 }
