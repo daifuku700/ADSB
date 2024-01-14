@@ -1,3 +1,0 @@
-#!/bin/bash
-g++ test.cpp -g -Wall
-./a.out ./data/MODEL1_rev/data0 ./data/MODEL1_rev/range0 ./data/MODEL1_rev/myans0
