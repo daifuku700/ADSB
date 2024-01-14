@@ -9,7 +9,16 @@ char A[10000 + 2];
 FILE *range, *data, *output;
 
 int main(int argc, char **argv) {
+    if (argc != 4) {
+        perror("the number of command line arguments should be three\n");
+        exit(1);
+    }
+
     range = fopen(argv[2], "r");
+    if (range == NULL) {
+        perror("could not open the file\n");
+        exit(2);
+    }
 
     if (fgets(line, sizeof(line), range) != NULL) {
         if (line[5] == '1') {
@@ -20,6 +29,10 @@ int main(int argc, char **argv) {
     }
 
     data = fopen(argv[1], "r");
+    if (data == NULL) {
+        perror("could not open the file\n");
+        exit(3);
+    }
 
     if (fgets(line, sizeof(line), data) != NULL) {
         for (int j = 0; j < 10000; j++) {
@@ -28,6 +41,10 @@ int main(int argc, char **argv) {
     }
 
     output = fopen(argv[3], "w");
+    if (output == NULL) {
+        perror("could not open the file\n");
+        exit(4);
+    }
 
     if (model == 1) {
         short *ans = (short *)malloc(sizeof(short) * (10000 * 8));
