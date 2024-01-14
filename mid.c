@@ -12,9 +12,8 @@ void input_data(int, char **);
 
 int main(int argc, char **argv) {
     clock_t tic, toc;
-    struct timespec start, end;
     tic = clock();
-    clock_gettime(CLOCK_REALTIME, &start);
+
     input_data(argc, argv);
 
     if (model == 1) {
@@ -57,11 +56,8 @@ int main(int argc, char **argv) {
     free(A);
 
     toc = clock();
-    clock_gettime(CLOCK_REALTIME, &end);
     printf("clock: %lf\n", (double)(toc - tic) / CLOCKS_PER_SEC);
-    printf("time: %lf\n",
-           ((double)end.tv_sec - (double)start.tv_sec) +
-               ((double)end.tv_nsec - (double)start.tv_nsec) / 1e9);
+
     return 0;
 }
 
