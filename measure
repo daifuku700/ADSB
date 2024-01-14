@@ -1,0 +1,61 @@
+#!/bin/bash
+gcc adsb_G1.c -o adsb_G1 -g -Wall
+> time1
+for ((i=0 ; i<10 ; i++)); do
+    echo "model 1 cycle: $i"
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL1_rev/data0 ./data/MODEL1_rev/range0 ./data/MODEL1_rev/myans0 2>&1 | awk '{print $1+$2}' >> time1
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL1_rev/data1 ./data/MODEL1_rev/range1 ./data/MODEL1_rev/myans1 2>&1 | awk '{print $1+$2}' >> time1
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL1_rev/data2 ./data/MODEL1_rev/range2 ./data/MODEL1_rev/myans2 2>&1 | awk '{print $1+$2}' >> time1
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL1_rev/data3 ./data/MODEL1_rev/range3 ./data/MODEL1_rev/myans3 2>&1 | awk '{print $1+$2}' >> time1
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL1_rev/data4 ./data/MODEL1_rev/range4 ./data/MODEL1_rev/myans4 2>&1 | awk '{print $1+$2}' >> time1
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL1_rev/data5 ./data/MODEL1_rev/range5 ./data/MODEL1_rev/myans5 2>&1 | awk '{print $1+$2}' >> time1
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL1_rev/data6 ./data/MODEL1_rev/range6 ./data/MODEL1_rev/myans6 2>&1 | awk '{print $1+$2}' >> time1
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL1_rev/data7 ./data/MODEL1_rev/range7 ./data/MODEL1_rev/myans7 2>&1 | awk '{print $1+$2}' >> time1
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL1_rev/data8 ./data/MODEL1_rev/range8 ./data/MODEL1_rev/myans8 2>&1 | awk '{print $1+$2}' >> time1
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL1_rev/data9 ./data/MODEL1_rev/range9 ./data/MODEL1_rev/myans9 2>&1 | awk '{print $1+$2}' >> time1
+done
+echo ""
+> time2
+for ((i=0 ; i<10 ; i++)); do
+    echo "model 2 cycle: $i"
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL2_rev/data0 ./data/MODEL2_rev/range0 ./data/MODEL2_rev/myans0 2>&1 | awk '{print $1+$2}' >> time2
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL2_rev/data1 ./data/MODEL2_rev/range1 ./data/MODEL2_rev/myans1 2>&1 | awk '{print $1+$2}' >> time2
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL2_rev/data2 ./data/MODEL2_rev/range2 ./data/MODEL2_rev/myans2 2>&1 | awk '{print $1+$2}' >> time2
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL2_rev/data3 ./data/MODEL2_rev/range3 ./data/MODEL2_rev/myans3 2>&1 | awk '{print $1+$2}' >> time2
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL2_rev/data4 ./data/MODEL2_rev/range4 ./data/MODEL2_rev/myans4 2>&1 | awk '{print $1+$2}' >> time2
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL2_rev/data5 ./data/MODEL2_rev/range5 ./data/MODEL2_rev/myans5 2>&1 | awk '{print $1+$2}' >> time2
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL2_rev/data6 ./data/MODEL2_rev/range6 ./data/MODEL2_rev/myans6 2>&1 | awk '{print $1+$2}' >> time2
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL2_rev/data7 ./data/MODEL2_rev/range7 ./data/MODEL2_rev/myans7 2>&1 | awk '{print $1+$2}' >> time2
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL2_rev/data8 ./data/MODEL2_rev/range8 ./data/MODEL2_rev/myans8 2>&1 | awk '{print $1+$2}' >> time2
+    /usr/bin/time -f "%U %S" ./adsb_G1 ./data/MODEL2_rev/data9 ./data/MODEL2_rev/range9 ./data/MODEL2_rev/myans9 2>&1 | awk '{print $1+$2}' >> time2
+done
+echo ""
+> memory1
+for ((i=0 ; i<10 ; i++)); do
+    echo "model 1 cycle: $i"
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL1_rev/data0 ./data/MODEL1_rev/range0 ./data/MODEL1_rev/myans0 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory1
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL1_rev/data1 ./data/MODEL1_rev/range1 ./data/MODEL1_rev/myans1 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory1
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL1_rev/data2 ./data/MODEL1_rev/range2 ./data/MODEL1_rev/myans2 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory1
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL1_rev/data3 ./data/MODEL1_rev/range3 ./data/MODEL1_rev/myans3 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory1
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL1_rev/data4 ./data/MODEL1_rev/range4 ./data/MODEL1_rev/myans4 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory1
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL1_rev/data5 ./data/MODEL1_rev/range5 ./data/MODEL1_rev/myans5 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory1
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL1_rev/data6 ./data/MODEL1_rev/range6 ./data/MODEL1_rev/myans6 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory1
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL1_rev/data7 ./data/MODEL1_rev/range7 ./data/MODEL1_rev/myans7 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory1
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL1_rev/data8 ./data/MODEL1_rev/range8 ./data/MODEL1_rev/myans8 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory1
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL1_rev/data9 ./data/MODEL1_rev/range9 ./data/MODEL1_rev/myans9 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory1
+done
+echo ""
+> memory2
+for ((i=0 ; i<10 ; i++)); do
+    echo "model 2 cycle: $i"
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data0 ./data/MODEL2_rev/range0 ./data/MODEL2_rev/myans0 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data1 ./data/MODEL2_rev/range1 ./data/MODEL2_rev/myans1 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data2 ./data/MODEL2_rev/range2 ./data/MODEL2_rev/myans2 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data3 ./data/MODEL2_rev/range3 ./data/MODEL2_rev/myans3 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data4 ./data/MODEL2_rev/range4 ./data/MODEL2_rev/myans4 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data5 ./data/MODEL2_rev/range5 ./data/MODEL2_rev/myans5 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data6 ./data/MODEL2_rev/range6 ./data/MODEL2_rev/myans6 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data7 ./data/MODEL2_rev/range7 ./data/MODEL2_rev/myans7 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data8 ./data/MODEL2_rev/range8 ./data/MODEL2_rev/myans8 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
+    /usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data9 ./data/MODEL2_rev/range9 ./data/MODEL2_rev/myans9 2>&1 | grep "Maximum resident set size" | awk '{print $6}' >> memory2
+done

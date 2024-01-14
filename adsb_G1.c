@@ -1,7 +1,5 @@
-#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 int k, model, i, j, dif, left;
 short l, s;
@@ -11,20 +9,8 @@ char A[10000 + 2];
 FILE *range, *data, *output;
 
 int main(int argc, char **argv) {
-    clock_t tic, toc;
-
-    if (argc != 4) {
-        perror("the number of command line arguments should be three\n");
-        exit(1);
-    }
-
-    tic = clock();
-
     range = fopen(argv[2], "r");
-    if (range == NULL) {
-        perror("could not open the file\n");
-        exit(2);
-    }
+
     if (fgets(line, sizeof(line), range) != NULL) {
         if (line[5] == '1') {
             model = 1, k = 8;
@@ -34,10 +20,7 @@ int main(int argc, char **argv) {
     }
 
     data = fopen(argv[1], "r");
-    if (data == NULL) {
-        perror("could not open the file\n");
-        exit(3);
-    }
+
     if (fgets(line, sizeof(line), data) != NULL) {
         for (int j = 0; j < 10000; j++) {
             A[j] = line[j];
@@ -45,10 +28,6 @@ int main(int argc, char **argv) {
     }
 
     output = fopen(argv[3], "w");
-    if (output == NULL) {
-        perror("could not open the file\n");
-        exit(4);
-    }
 
     if (model == 1) {
         short *ans = (short *)malloc(sizeof(short) * (10000 * 8));
@@ -108,7 +87,5 @@ int main(int argc, char **argv) {
     fclose(range);
     fclose(output);
 
-    toc = clock();
-    printf("clock: %lf\n", (double)(toc - tic) / CLOCKS_PER_SEC);
     return 0;
 }
