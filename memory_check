@@ -1,6 +1,0 @@
-#!/bin/bash
-gcc adsb_G1.c -o adsb_G1 -g -Wall
-echo "model 1"
-/usr/bin/time -v ./adsb_G1 ./data/MODEL1_rev/data0 ./data/MODEL1_rev/range0 ./data/MODEL1_rev/myans0 2>&1 | grep "Maximum resident set size"
-echo "model 2"
-/usr/bin/time -v ./adsb_G1 ./data/MODEL2_rev/data0 ./data/MODEL2_rev/range0 ./data/MODEL2_rev/myans0 2>&1 | grep "Maximum resident set size"
