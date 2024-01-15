@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int k, model, i, j, dif, left;
 short l, s;
@@ -13,6 +14,9 @@ int main(int argc, char **argv) {
         perror("the number of command line arguments should be three\n");
         exit(1);
     }
+
+    clock_t tic, tok;
+    tic = clock();
 
     range = fopen(argv[2], "r");
     if (range == NULL) {
@@ -68,7 +72,7 @@ int main(int argc, char **argv) {
                 ans[(i + 1) * 8 + j - 1] += ans[i * 8 + j];
             }
         }
-        for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
+        for (; fscanf(range, "%hd, %hd\n", &l, &s) != EOF;) {
             fprintf(output, "%hd, %hd, %hd\n", l, s, ans[l * 8 + s - 1]);
         }
         free(ans);
@@ -103,6 +107,10 @@ int main(int argc, char **argv) {
     fclose(data);
     fclose(range);
     fclose(output);
+
+    tok = clock();
+
+    printf("clock: %lf\n", (double)(tok - tic) / CLOCKS_PER_SEC);
 
     return 0;
 }
