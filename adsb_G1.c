@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-int k, model, i, j, dif, left;
+int model, i, j, dif, left;
 short l, s;
 
 char line[10000 + 2];
@@ -26,9 +26,9 @@ int main(int argc, char **argv) {
 
     if (fgets(line, sizeof(line), range) != NULL) {
         if (line[5] == '1') {
-            model = 1, k = 8;
+            model = 1;
         } else {
-            model = 2, k = 300;
+            model = 2;
         }
     }
 
@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
     }
 
     if (model == 1) {
-        short *ans = (short *)malloc(sizeof(short) * (10000 * 8));
+        short *ans = (short *)malloc(sizeof(short) * 80000);
         for (; fgets(line, sizeof(line), data) != NULL;) {
             left = -1; // 最後に回答が違った場所
             for (i = 0; i < 10000; i++) {
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
         }
         free(ans);
     } else {
-        short *ans = (short *)malloc(sizeof(short) * (10000 * 300));
+        short *ans = (short *)malloc(sizeof(short) * 3000000);
         for (; fgets(line, sizeof(line), data) != NULL;) {
             left = -1;
             for (i = 0; i < 10000; i++) {
@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
                 ans[(i + 1) * 300 + j - 1] += ans[i * 300 + j];
             }
         }
-        for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
+        for (; fscanf(range, "%hd, %hd\n", &l, &s) != EOF;) {
             fprintf(output, "%hd, %hd, %hd\n", l, s, ans[l * 300 + s - 1]);
         }
         free(ans);
