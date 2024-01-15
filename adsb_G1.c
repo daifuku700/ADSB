@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int k, model, i, j, dif, left;
+int model, i, j, dif, left;
 short l, s;
 
 char line[10000 + 2];
@@ -13,9 +13,9 @@ int main(int argc, char **argv) {
 
     if (fgets(line, sizeof(line), range) != NULL) {
         if (line[5] == '1') {
-            model = 1, k = 8;
+            model = 1;
         } else {
-            model = 2, k = 300;
+            model = 2;
         }
     }
 
@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
                 ans[(i + 1) * 8 + j - 1] += ans[i * 8 + j];
             }
         }
-        for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
+        for (; fscanf(range, "%hd, %hd\n", &l, &s) != EOF;) {
             fprintf(output, "%hd, %hd, %hd\n", l, s, ans[l * 8 + s - 1]);
         }
         free(ans);
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
                 ans[(i + 1) * 300 + j - 1] += ans[i * 300 + j];
             }
         }
-        for (; fscanf(range, "%hd, %hd/n", &l, &s) != EOF;) {
+        for (; fscanf(range, "%hd, %hd\n", &l, &s) != EOF;) {
             fprintf(output, "%hd, %hd, %hd\n", l, s, ans[l * 300 + s - 1]);
         }
         free(ans);
