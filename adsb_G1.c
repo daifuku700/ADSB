@@ -15,8 +15,8 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    clock_t tik, tok;
-    tik = clock();
+    clock_t start, end;
+    start = clock();
 
     range = fopen(argv[2], "r");
     if (range == NULL) {
@@ -108,9 +108,9 @@ int main(int argc, char **argv) {
     fclose(range);
     fclose(output);
 
-    tok = clock();
+    end = clock();
 
-    printf("clock: %lf\n", (double)(tok - tik) / CLOCKS_PER_SEC);
+    printf("clock: %lf\n", (double)(end - start) / CLOCKS_PER_SEC);
 
     return 0;
 }
